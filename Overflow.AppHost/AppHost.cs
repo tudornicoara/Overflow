@@ -1,3 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.Build().Run();
+var keycloak = builder.AddKeycloak("keycloak", 6001)
+    .WithDataVolume("keycloak-data");
+
+await builder.Build().RunAsync();
