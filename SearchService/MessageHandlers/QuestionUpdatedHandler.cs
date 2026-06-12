@@ -1,12 +1,12 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Contracts;
 using Typesense;
 
 namespace SearchService.MessageHandlers;
 
-public class QuestionUpdatedHandler(ITypesenseClient client)
+public static class QuestionUpdatedHandler
 {
-    public async Task HandleAsync(QuestionUpdated message)
+    public static async Task Handle(QuestionUpdated message, ITypesenseClient client)
     {
         await client.UpdateDocument("questions", message.QuestionId, new
         {
@@ -15,9 +15,7 @@ public class QuestionUpdatedHandler(ITypesenseClient client)
             Tags = message.Tags.ToArray()
         });
     }
-    
-    private static string StripHtml(string content)
-    {
-        return Regex.Replace(content, "<.*?>", string.Empty);
-    }
+
+    private static string StripHtml(string content) =>
+        Regex.Replace(content, "<.*?>", string.Empty);
 }

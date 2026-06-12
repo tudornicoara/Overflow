@@ -1,11 +1,11 @@
-﻿using Contracts;
+using Contracts;
 using Typesense;
 
 namespace SearchService.MessageHandlers;
 
-public class AcceptAnswerHandler(ITypesenseClient client)
+public static class AcceptAnswerHandler
 {
-    public async Task HandleAsync(AnswerAccepted message)
+    public static async Task Handle(AnswerAccepted message, ITypesenseClient client)
     {
         await client.UpdateDocument("questions", message.QuestionId,
             new { HasAcceptedAnswer = true });

@@ -1,13 +1,13 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Contracts;
 using SearchService.Models;
 using Typesense;
 
 namespace SearchService.MessageHandlers;
 
-public class QuestionCreatedHandler(ITypesenseClient client)
+public static class QuestionCreatedHandler
 {
-    public async Task HandleAsync(QuestionCreated message)
+    public static async Task Handle(QuestionCreated message, ITypesenseClient client)
     {
         var created = new DateTimeOffset(message.Created).ToUnixTimeSeconds();
 
@@ -25,8 +25,6 @@ public class QuestionCreatedHandler(ITypesenseClient client)
         Console.WriteLine($"Created question with id {message.QuestionId}");
     }
 
-    private static string StripHtml(string content)
-    {
-        return Regex.Replace(content, "<.*?>", string.Empty);
-    }
+    private static string StripHtml(string content) =>
+        Regex.Replace(content, "<.*?>", string.Empty);
 }
